@@ -20,7 +20,10 @@ if not api_key:
 client = OpenAI(api_key=api_key)
 
 app = Flask(__name__)
-CORS(app)
+CORS(app, origins=[
+    "http://localhost:3000",
+    "https://learnloop-deployment-frontend.vercel.app"
+])
 
 db_url = os.getenv("DATABASE_URL")
 if db_url:
