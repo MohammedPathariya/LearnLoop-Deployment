@@ -568,5 +568,6 @@ if __name__ == "__main__":
     port = int(os.environ.get("PORT", 10000))
     with app.app_context():
         db.create_all()
-    print("🧠 Flask app starting. Database:", db_path)
+    db_uri = app.config.get("SQLALCHEMY_DATABASE_URI", "unknown")
+    print(f"🧠 Flask app starting on 0.0.0.0:{port} — Database: {db_uri}")
     app.run(host="0.0.0.0", port=port)
