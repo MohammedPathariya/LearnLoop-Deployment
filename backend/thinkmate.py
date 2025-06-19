@@ -12,11 +12,6 @@ from flask import Response
 
 load_dotenv()
 
-# Health check endpoint for Render
-@app.route("/healthz")
-def healthz():
-    return "OK", 200
-
 # ─── Setup ───────────────────────────────────────────
 api_key = os.getenv("OPENAI_API_KEY")
 if not api_key:
@@ -38,6 +33,12 @@ else:
     app.config['SQLALCHEMY_DATABASE_URI'] = f'sqlite:///{db_path}'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
+
+
+# Health check endpoint for Render
+@app.route("/healthz")
+def healthz():
+    return "OK", 200
 
 # ─── Models ──────────────────────────────────────────
 class Conversation(db.Model):
