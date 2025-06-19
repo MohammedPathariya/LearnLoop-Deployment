@@ -8,8 +8,14 @@ import re
 import json
 from dotenv import load_dotenv
 from sqlalchemy import func, or_
+from flask import Response
 
 load_dotenv()
+
+# Health check endpoint for Render
+@app.route("/healthz")
+def healthz():
+    return "OK", 200
 
 # ─── Setup ───────────────────────────────────────────
 api_key = os.getenv("OPENAI_API_KEY")
