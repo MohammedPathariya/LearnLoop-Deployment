@@ -569,9 +569,13 @@ def get_flashcard_stats():
 
 # ─── Init & Run ─────────────────────────────────────
 if __name__ == "__main__":
-    port = int(os.environ.get("PORT", 10000))
+    port = int(os.environ.get("PORT", 8080))  # Use 8080 as default for Hugging Face
+
     with app.app_context():
         db.create_all()
-    db_uri = app.config.get("SQLALCHEMY_DATABASE_URI", "unknown")
+
     print("🧠 Flask app starting with Supabase PostgreSQL")
+    print("📡 Listening on port:", port)
+    print("🔗 DB URI:", app.config.get("SQLALCHEMY_DATABASE_URI", "Not set"))
+
     app.run(host="0.0.0.0", port=port)
