@@ -25,15 +25,16 @@ CORS(app, origins=[
     "https://learnloop-deployment-frontend.vercel.app"
 ])
 
-db_url = os.getenv("DATABASE_URL")
+db_url = os.getenv("SUPABASE_DB_URI")
 if db_url:
-    # Render's DATABASE_URL may start with "postgres://", which SQLAlchemy expects as "postgresql://"
-    db_url = db_url.replace("postgres://", "postgresql://", 1)
+    # Supabase connection string already uses "postgresql://"
     app.config['SQLALCHEMY_DATABASE_URI'] = db_url
 else:
+    # Fallback to local SQLite for development
     basedir = os.path.abspath(os.path.dirname(__file__))
     db_path = os.path.join(basedir, 'conversations.db')
     app.config['SQLALCHEMY_DATABASE_URI'] = f'sqlite:///{db_path}'
+
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
 
@@ -572,5 +573,5 @@ if __name__ == "__main__":
     with app.app_context():
         db.create_all()
     db_uri = app.config.get("SQLALCHEMY_DATABASE_URI", "unknown")
-    print(f"🧠 Flask app starting on 0.0.0.0:{port} — Database: {db_uri}")
+    print("🧠 Flask app starting with Supabase PostgreSQL")
     app.run(host="0.0.0.0", port=port)
